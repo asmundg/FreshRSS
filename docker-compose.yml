@@ -4,6 +4,20 @@ php:
     - "8080:80"
   links:
     - mysql:mysql
+  volumes:
+    - app:/var/www/app
+
+# Since user information is persisted in /var/www/data and not in the
+# database, we need to mount that volume when updating, to be able to
+# list the users.
+update:
+  build: .
+  links:
+    - mysql:mysql
+  volumes:
+    - app:/var/www/app
+  volumes_from:
+    - php
 
 mysql:
   image: mysql:5.6
